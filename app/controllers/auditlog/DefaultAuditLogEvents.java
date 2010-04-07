@@ -3,17 +3,16 @@ package controllers.auditlog;
 import jobs.auditlog.SaveAuditLogEvent;
 import models.auditlog.AuditLogEvent;
 import play.modules.auditlog.AuditLog;
-import play.mvc.Scope;
+import play.mvc.Controller;
 
-public class DefaultAuditLogEvents extends AuditLog {
+public class DefaultAuditLogEvents extends Controller {
 
     static String getActor() {
-        return Scope.Session.current().get("username");
+        return session.get("username");
     }
 
     static void onCreate(String model, String modelId, String property, String value) {
-        System.out.println("create");
-        String actor = (String) invoke("getActor");
+        String actor = (String) AuditLog.invoke("getActor");
         new SaveAuditLogEvent(
                 model,
                 modelId,
@@ -26,8 +25,7 @@ public class DefaultAuditLogEvents extends AuditLog {
     }
 
     static void onUpdate(String model, String modelId, String property, String oldValue, String value) {
-        System.out.println("update");
-        String actor = (String) invoke("getActor");
+        String actor = (String) AuditLog.invoke("getActor");
         new SaveAuditLogEvent(
                 model,
                 modelId,
@@ -40,8 +38,7 @@ public class DefaultAuditLogEvents extends AuditLog {
     }
 
     static void onDelete(String model, String modelId, String property, String value) {
-        System.out.println("delete");
-        String actor = (String) invoke("getActor");
+        String actor = (String) AuditLog.invoke("getActor");
         new SaveAuditLogEvent(
                 model,
                 modelId,

@@ -8,19 +8,17 @@ import java.util.List;
 
 public class AuditLog {
 
-    protected static Object invoke(String m, Object... args) {
+    public static Object invoke(String m, Object... args) {
         Class auditLog = null;
-        List<Class> classes = Play.classloader.getAssignableClasses(AuditLog.class);
-        if (classes.size() == 0) {
-            Logger.error("AuditLog controller not found");
+        try {
+            auditLog = Play.classloader.loadClass("controllers.auditlog.DefaultAuditLogEvents");
+        } catch (ClassNotFoundException e) {
+            Logger.error("class controllers.auditlog.DefaultAuditLogEvents not found");
             return null;
-        } else {
+        }
+        List<Class> classes = Play.classloader.getAssignableClasses(auditLog);
+        if (classes.size() > 0) {
             auditLog = classes.get(0);
-            for (Class clazz : classes) {
-                if (!clazz.getName().contains("DefaultAuditLogEvents")) {
-                    auditLog = clazz;
-                }
-            }
         }
         try {
             return Java.invokeStaticOrParent(auditLog, m, args);
