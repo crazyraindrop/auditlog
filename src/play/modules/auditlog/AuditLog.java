@@ -17,7 +17,7 @@ public class AuditLog {
         } else {
             auditLog = classes.get(0);
             for (Class clazz : classes) {
-                if (!clazz.getName().contains("DefaultAuditLog")) {
+                if (!clazz.getName().contains("DefaultAuditLogEvents")) {
                     auditLog = clazz;
                 }
             }

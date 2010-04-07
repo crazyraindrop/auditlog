@@ -5,7 +5,7 @@ import models.auditlog.AuditLogEvent;
 import play.modules.auditlog.AuditLog;
 import play.mvc.Scope;
 
-public class DefaultAuditLog extends AuditLog {
+public class DefaultAuditLogEvents extends AuditLog {
 
     static String getActor() {
         return Scope.Session.current().get("username");
